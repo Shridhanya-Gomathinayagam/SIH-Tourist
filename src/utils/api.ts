@@ -108,33 +108,159 @@ export const mockTripStatistics: TripStatistic = {
   ]
 };
 
-// API functions
+// API functions - Updated to use real backend
 export const fetchTourists = async (): Promise<Tourist[]> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return mockTourists;
+  try {
+    const data = await apiRequest('/tourism/tourists');
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch tourists:', error);
+    // Fallback to mock data
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return mockTourists;
+  }
 };
 
 export const fetchAlerts = async (): Promise<Alert[]> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return mockAlerts;
+  try {
+    const data = await apiRequest('/police/alerts');
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch alerts:', error);
+    // Fallback to mock data
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return mockAlerts;
+  }
 };
 
 export const fetchTripStatistics = async (): Promise<TripStatistic> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return mockTripStatistics;
+  try {
+    const data = await apiRequest('/tourism/statistics');
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch statistics:', error);
+    // Fallback to mock data
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return mockTripStatistics;
+  }
 };
 
 export const updateSafetyScore = async (score: number): Promise<boolean> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return true;
+  try {
+    await apiRequest('/tourist/profile', {
+      method: 'PUT',
+      body: JSON.stringify({ safety_score: score }),
+    });
+    return true;
+  } catch (error) {
+    console.error('Failed to update safety score:', error);
+    return false;
+  }
 };
 
 export const triggerPanic = async (): Promise<boolean> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return true;
+  try {
+    await apiRequest('/tourist/panic', {
+      method: 'POST',
+    });
+    return true;
+  } catch (error) {
+    console.error('Failed to trigger panic:', error);
+    return false;
+  }
 };
 
 export const acknowledgeAlert = async (alertId: string): Promise<boolean> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return true;
+  try {
+    await apiRequest(`/police/alerts/${alertId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ status: 'acknowledged' }),
+    });
+    return true;
+  } catch (error) {
+    console.error('Failed to acknowledge alert:', error);
+    return false;
+  }
+};
+
+// Authentication API functions
+export const loginUser = async (email: string, password: string, role: string) => {
+  try {
+    const response = await apiRequest('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password, role }),
+    });
+    
+    // Store token in localStorage
+    if (response.access_token) {
+      localStorage.setItem('access_token', response.access_token);
+      localStorage.setItem('user', JSON.stringify(response.user));
+    }
+    
+    return response;
+  } catch (error) {
+    console.error('Login failed:', error);
+    throw error;
+  }
+};
+
+export const signupUser = async (userData: any) => {
+  try {
+    const response = await apiRequest('/auth/signup', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+    });
+    return response;
+  } catch (error) {
+    console.error('Signup failed:', error);
+    throw error;
+  }
+};
+
+export const getCurrentUser = async () => {
+  try {
+    const response = await apiRequest('/auth/me');
+    return response;
+  } catch (error) {
+    console.error('Failed to get current user:', error);
+    throw error;
+  }
+};
+
+// Tourism Department API functions
+export const getTourismAnalytics = async () => {
+  try {
+    const [influx, destinations, languages, safety] = await Promise.all([
+      apiRequest('/tourism/analytics/influx'),
+      apiRequest('/tourism/analytics/destinations'),
+      apiRequest('/tourism/analytics/languages'),
+      apiRequest('/tourism/analytics/safety-metrics'),
+    ]);
+    
+    return { influx, destinations, languages, safety };
+  } catch (error) {
+    console.error('Failed to fetch tourism analytics:', error);
+    return null;
+  }
+};
+
+export const getRecentActivities = async () => {
+  try {
+    const data = await apiRequest('/tourism/activities/recent');
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch recent activities:', error);
+    return [];
+  }
+};
+
+// Police API functions
+export const getPoliceDashboardStats = async () => {
+  try {
+    const data = await apiRequest('/police/dashboard/stats');
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch police stats:', error);
+    return null;
+  }
 };
