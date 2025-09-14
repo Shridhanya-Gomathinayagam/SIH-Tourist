@@ -116,10 +116,9 @@ const PoliceDashboard: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Police Control Room</h1>
-          <p className="text-gray-600 mt-1">Welcome back, Officer {user?.name}</p>
         </div>
         <div className="text-right">
-          <p className="text-sm text-gray-500">Last updated: 11:36:43 AM</p>
+          <p className="text-sm text-gray-500">Last updated: 10:12:25 AM</p>
         </div>
       </div>
 

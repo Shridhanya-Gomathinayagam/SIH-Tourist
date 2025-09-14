@@ -4,6 +4,9 @@ import TouristRegistry from './TouristRegistry';
 import Analytics from './Analytics';
 import TouristInfluxChart from './TouristInfluxChart';
 import TopDestinations from './TopDestinations';
+import LanguageDistribution from './LanguageDistribution';
+import RecentActivities from './RecentActivities';
+import SafetyMetrics from './SafetyMetrics';
 import { Building2, Users, BarChart3, MapPin, TrendingUp, AlertTriangle } from 'lucide-react';
 import { fetchTourists, fetchTripStatistics } from '../../utils/api';
 import { Tourist, TripStatistic } from '../../types';
@@ -139,6 +142,15 @@ const TourismDashboard: React.FC = () => {
         <TouristInfluxChart />
         <TopDestinations />
       </div>
+
+      {/* Additional Analytics Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <LanguageDistribution />
+        <RecentActivities />
+      </div>
+
+      {/* Safety Metrics */}
+      <SafetyMetrics />
 
       {/* Legacy sections - keeping for backward compatibility but hidden */}
       <div className="hidden">

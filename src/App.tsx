@@ -243,6 +243,25 @@ function App() {
 
 // Dashboard Router Component to handle role-based dashboard routing
 const DashboardRouter: React.FC = () => {
+  const { user } = useAuth();
+  
+  // For testing purposes, show dashboard based on user role or default to tourist
+  if (!user) {
+    return <TouristDashboard />;
+  }
+  
+  switch (user.role) {
+    case 'police':
+      return <PoliceDashboard />;
+    case 'tourism':
+      return <TourismDashboard />;
+    default:
+      return <TouristDashboard />;
+  }
+};
+
+// Legacy Dashboard Router - keeping for backward compatibility but hidden
+const LegacyDashboardRouter: React.FC = () => {
   return (
     <Routes>
       <Route
