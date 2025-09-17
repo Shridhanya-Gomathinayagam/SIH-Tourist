@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from ..core.database import Base
@@ -27,10 +27,10 @@ class EmergencyContact(Base):
     id = Column(Integer, primary_key=True, index=True)
     trip_id = Column(Integer, ForeignKey("trips.id"))
     name = Column(String, nullable=False)
-    relationship = Column(String)
+    relation = Column(String)  # Renamed from 'relationship' to 'relation' to avoid conflict
     phone = Column(String, nullable=False)
     email = Column(String)
-    is_primary = Column(String, default=False)
+    is_primary = Column(Boolean, default=False)
     
     # Relationships
     trip = relationship("Trip", back_populates="emergency_contacts")

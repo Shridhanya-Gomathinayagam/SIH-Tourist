@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from ..core.database import get_db
 from ..schemas.user import UserCreate, UserLogin, Token, User
 from ..services.auth_service import AuthService
+from ..api.deps import get_current_active_user
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
 

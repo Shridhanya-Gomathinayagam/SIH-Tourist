@@ -28,7 +28,7 @@ def get_tourist_profile(
     return tourist
 
 @router.put("/profile")
-def update_tourist_profile(
+async def update_tourist_profile(
     profile_update: TouristUpdate,
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db)

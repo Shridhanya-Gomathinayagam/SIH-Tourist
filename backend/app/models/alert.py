@@ -15,7 +15,7 @@ class Alert(Base):
     message = Column(Text)
     location = Column(Geometry('POINT'))
     address = Column(String)
-    metadata = Column(Text)  # JSON string for additional data
+    alert_metadata = Column(Text)  # JSON string for additional data
     assigned_officer_id = Column(Integer, ForeignKey("police.id"))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     acknowledged_at = Column(DateTime(timezone=True))

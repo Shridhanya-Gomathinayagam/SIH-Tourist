@@ -5,11 +5,11 @@ services:
   postgres:
     image: postgis/postgis:15-3.3
     environment:
-      POSTGRES_DB: tourist_safety
+      POSTGRES_DB: postgis_sample
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: password123
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -65,7 +65,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://postgres:password@postgres:5432/tourist_safety
+      - DATABASE_URL=postgresql://postgres:password123@postgres:5432/postgis_sample
       - REDIS_URL=redis://redis:6379
       - ELASTICSEARCH_URL=http://elasticsearch:9200
       - MQTT_BROKER_HOST=mosquitto
